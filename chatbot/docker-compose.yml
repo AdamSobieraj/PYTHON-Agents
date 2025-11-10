@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  openai-jira-agent:
+    build: .
+    container_name: openai_jira_agent
+    environment:
+      - ATLASSIAN_URL=https://<twoja-domena>.atlassian.net
+      - JIRA_USER=<jira_ure_email>
+      - JIRA_API_TOKEN=<token>
+      - OPENAI_API_KEY=sk-xxxxxx
+      - AGENT_PORT=8000
+    ports:
+      - "8000:8000"
