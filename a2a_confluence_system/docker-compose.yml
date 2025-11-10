@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  confluence-agent:
+    build:
+      context: .
+      dockerfile: agent_confluence/Dockerfile
+    container_name: confluence_agent
+    environment:
+      - MOCK_MODE=true
+      - A2A_AGENT_NAME=confluence-fetcher
+      - A2A_SERVER_PORT=8000
+      - ANALYZER_URL=http://agent-analyzer:8001
+    ports:
+      - "8000:8000"
+    depends_on:
+      - agent-analyzer
+    volumes:
+      - ./a2a:/app/a2a
+      - ./agent_confluence:/app/agent_confluence
+
+  agent-analyzer:
+    build:
+      context: .
+      dockerfile: agent_analyzer/Dockerfile
+    container_name: agent_analyzer
+    environment:
+      - OPENAI_API_KEY=
+      - A2A_AGENT_NAME=doc-analyzer
+      - A2A_SERVER_PORT=8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./a2a:/app/a2a
+      - ./agent_analyzer:/app/agent_analyzer

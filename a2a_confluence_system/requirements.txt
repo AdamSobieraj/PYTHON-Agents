@@ -1,0 +1,8 @@
+# HTTP requests dla Confluence / Jira API
+requests
+
+# OpenAI GPT
+openai
+
+# Faker do generowania mockowych danych Confluence
+Faker
