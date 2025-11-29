@@ -1,8 +1,9 @@
 class ShopAssistant:
-    def __init__(self, client, search_service):
+    def __init__(self, client, search_service, chat_model):
 
         self.client = client
         self.search_service = search_service
+        self.chat_model = chat_model
 
     def generate_answer(self, query: str, context_texts: list[str]) -> str:
         trimmed_context = [(t or "")[:600] for t in context_texts]
@@ -28,7 +29,7 @@ class ShopAssistant:
         ]
 
         response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=self.chat_model,
             messages=messages
         )
 

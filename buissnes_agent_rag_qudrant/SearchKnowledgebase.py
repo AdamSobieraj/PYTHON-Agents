@@ -4,9 +4,11 @@ import numpy as np
 from openai import OpenAI
 
 class SearchKnowledgebase:
-    def __init__(self, client: OpenAI, knowledge_path: str,
-                 qdrant_client: QdrantClient, collection_name: str,
-                 embedding_model="text-embedding-3-small"):
+    def __init__(self, client: OpenAI,
+                 knowledge_path: str,
+                 qdrant_client: QdrantClient,
+                 collection_name: str,
+                 embedding_model):
         self.client = client
         self.model = embedding_model
         self.knowledge_path = knowledge_path
@@ -60,17 +62,8 @@ class SearchKnowledgebase:
             with_payload=True
         )
 
-        # Sprawdź, gdzie są punkty
-        if hasattr(response, "points"):
-            results = response.points
-        elif hasattr(response, "result"):
-            results = response.result
-        else:
-            # fallback, traktujemy response jako listę
-            results = list(response)
-
         texts = []
-        for point in results:
+        for point in response.points:
             # punkt może być dict lub PointStruct
             if isinstance(point, dict):
                 texts.append(point.get("payload", {}).get("text", str(point)))
